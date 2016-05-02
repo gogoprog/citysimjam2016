@@ -9,6 +9,8 @@ import ash.tools.ListIteratingSystem;
 class CameraSystem extends ListIteratingSystem<CameraNode>
 {
     private var input:Input;
+    private var startPosition:Vector3;
+    private var startMousePosition:IntVector2;
 
     public function new()
     {
@@ -18,16 +20,20 @@ class CameraSystem extends ListIteratingSystem<CameraNode>
 
     private function updateNode(node:CameraNode, dt:Float):Void
     {
+        var button = 1;
         var e:Entity = node.entity;
         var p = e.position;
 
-        if(input.getMouseButtonPress(2))
+        if(input.getMouseButtonPress(button))
         {
-            trace('mousedo');
+            startPosition = p;
+            startMousePosition = input.getMousePosition();
         }
-        else if(input.getMouseButtonDown(3))
+        else if(input.getMouseButtonDown(button))
         {
-            p.x += 100 * dt;
+            var mousePosition = input.getMousePosition();
+            p.x = startPosition.x - mousePosition.x + startMousePosition.x;
+            p.y = startPosition.y + mousePosition.y - startMousePosition.y;
         }
 
         e.setPosition(p);
