@@ -7,8 +7,6 @@ import ash.tools.ListIteratingSystem;
 
 class TileSystem extends ListIteratingSystem<TileNode>
 {
-    private var tileSize = new IntVector2(100, 60);
-
     public function new()
     {
         super(TileNode, null, onNodeAdded);
@@ -21,15 +19,22 @@ class TileSystem extends ListIteratingSystem<TileNode>
         var p = e.position;
 
         var c = node.tile.coords;
-        var v = getCarFromIso(c.x, c.y);
+        var v = getIsoFromCar(c.x, c.y);
 
         p.x = v.x * 50;
-        p.y = v.y * 30;
+        p.y = v.y * 50;
+
         e.setPosition(p);
+        node.sprite.setLayer(cast(-p.y));
     }
 
     private function getCarFromIso(i:Int, j:Int):Vector2
     {
         return new Vector2((i + 2.0*j) / 2.0, (2.0*j - i )/2.0);
+    }
+
+    private function getIsoFromCar(x:Int, y:Int):Vector2
+    {
+        return new Vector2(x - y, (x + y) / 2.0);
     }
 }

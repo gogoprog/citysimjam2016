@@ -52,12 +52,16 @@ class Application
         viewport.setCamera(cameraEntity.get(Camera));
         Gengine.getRenderer().setViewport(0, viewport);
 
-        addTile(0, 0);
-        addTile(1, 0);
-        addTile(1, 1);
-        addTile(1, 2);
-    }
+        var size = 100;
 
+        for(i in 0...size)
+        {
+            for(j in 0...size)
+            {
+                addTile(i, j);
+            }
+        }
+    }
 
     public static function addTile(x:Int, y:Int)
     {
@@ -65,7 +69,8 @@ class Application
         e.add(new StaticSprite2D());
         e.add(new Tile(new IntVector2(x, y)));
         var staticSprite2D:StaticSprite2D = e.get(StaticSprite2D);
-        staticSprite2D.setSprite(Gengine.getResourceCache().getSprite2D("dirt.png", true));
+        var texture = Math.random() < 0.5 ? "dirt.png" : "grass.png";
+        staticSprite2D.setSprite(Gengine.getResourceCache().getSprite2D(texture, true));
         engine.addEntity(e);
     }
 }
