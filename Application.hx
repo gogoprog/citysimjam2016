@@ -33,6 +33,12 @@ class Application
 
     public static function start(_engine:Engine)
     {
+        untyped __js__("
+            if(typeof $ !== 'undefined') {
+                $('#gui').remove();
+            }
+        ");
+
         engine = _engine;
 
         engine.addSystem(new ExitSystem(), 0);
@@ -52,7 +58,7 @@ class Application
         viewport.setCamera(cameraEntity.get(Camera));
         Gengine.getRenderer().setViewport(0, viewport);
 
-        var size = 100;
+        var size = 5;
 
         for(i in 0...size)
         {
