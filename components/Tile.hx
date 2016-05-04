@@ -2,6 +2,12 @@ package components;
 
 import gengine.math.*;
 
+enum TileType {
+    Dirt;
+    Grass;
+    Road;
+}
+
 class Tile
 {
     public var coords:IntVector2;
@@ -10,4 +16,6 @@ class Tile
     {
         coords = _coords;
     }
+
+    public var type:TileType = TileType.Dirt;
 }

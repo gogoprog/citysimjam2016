@@ -8,20 +8,26 @@ import ash.tools.ListIteratingSystem;
 import gengine.components.*;
 import systems.*;
 import components.*;
+import haxe.ds.Vector;
 
 class TileSystem extends ListIteratingSystem<TileNode>
 {
     private var tileSize = 50;
     private var engine:Engine;
-    private var grid:Array<Array<Entity>>;
+    private var grid:Vector<Vector<TileNode>>;
     private var input:Input;
     private var mouseCoords = new IntVector2(1, 1);
     private var previousMouseCoords = new IntVector2(1, 1);
+    private var sprites = new Map<String, Dynamic>();
 
     public function new()
     {
         super(TileNode, null, onNodeAdded);
         input = Gengine.getInput();
+
+        sprites["dirt"] = Gengine.getResourceCache().getSprite2D("dirt.png", true);
+        sprites["grass"] = Gengine.getResourceCache().getSprite2D("grass.png", true);
+        sprites["roadEast"] = Gengine.getResourceCache().getSprite2D("roadEast.png", true);
     }
 
     override public function addToEngine(_engine:Engine)
@@ -42,17 +48,17 @@ class TileSystem extends ListIteratingSystem<TileNode>
         var mp = engine.getSystem(CameraSystem).mouseWorldPosition;
 
         var converted = getCarFromIso(mp.x, mp.y);
-        mouseCoords.x = Math.floor((converted.x + 25) / tileSize);
-        mouseCoords.y = Math.floor((converted.y + 25) / tileSize);
+        mouseCoords.x = Math.floor((converted.x + tileSize/2) / tileSize);
+        mouseCoords.y = Math.floor((converted.y + tileSize/2) / tileSize);
 
         if(areCoordsOnMap(previousMouseCoords))
         {
-            grid[previousMouseCoords.x][previousMouseCoords.y].get(StaticSprite2D).setColor(new Color(1, 1, 1, 1));
+            grid[previousMouseCoords.x][previousMouseCoords.y].sprite.setColor(new Color(1, 1, 1, 1));
         }
 
         if(areCoordsOnMap(mouseCoords))
         {
-            grid[mouseCoords.x][mouseCoords.y].get(StaticSprite2D).setColor(new Color(1, 1, 1, 0.5));
+            grid[mouseCoords.x][mouseCoords.y].sprite.setColor(new Color(1, 1, 1, 0.5));
         }
 
         previousMouseCoords.x = mouseCoords.x;
@@ -66,18 +72,16 @@ class TileSystem extends ListIteratingSystem<TileNode>
 
     public function generateMap(size:Int)
     {
-        grid = new Array<Array<Entity>>();
+        grid = new Vector<Vector<TileNode>>(size);
 
         for(i in 0...size)
         {
-            var array = new Array<Entity>();
+            grid[i] = new Vector<TileNode>(size);
 
             for(j in 0...size)
             {
-                array.push(addTile(i, j));
+                addTile(i, j);
             }
-
-            grid.push(array);
         }
     }
 
@@ -100,6 +104,9 @@ class TileSystem extends ListIteratingSystem<TileNode>
 
         e.setPosition(p);
         node.sprite.setLayer(cast(-p.y));
+        grid[c.x][c.y] = node;
+
+        checkTexture(node);
     }
 
     private function getCarFromIso(i:Float, j:Float):Vector2
@@ -117,10 +124,22 @@ class TileSystem extends ListIteratingSystem<TileNode>
         var e = new Entity();
         e.add(new StaticSprite2D());
         e.add(new Tile(new IntVector2(x, y)));
-        var staticSprite2D:StaticSprite2D = e.get(StaticSprite2D);
-        var texture = Math.random() < 0.5 ? "dirt.png" : "grass.png";
-        staticSprite2D.setSprite(Gengine.getResourceCache().getSprite2D(texture, true));
         engine.addEntity(e);
         return e;
+    }
+
+    private function checkTexture(node:TileNode)
+    {
+        switch(node.tile.type)
+        {
+            case Dirt:
+                node.sprite.setSprite(sprites["dirt"]);
+
+            case Grass:
+                node.sprite.setSprite(sprites["grass"]);
+
+            case Road:
+                node.sprite.setSprite(sprites["road"]);
+        }
     }
 }
