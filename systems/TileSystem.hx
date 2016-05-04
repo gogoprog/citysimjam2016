@@ -12,7 +12,7 @@ import haxe.ds.Vector;
 
 class TileSystem extends ListIteratingSystem<TileNode>
 {
-    private var tileSize = 50;
+    static public var tileSize = 50;
     private var engine:Engine;
     private var grid:Vector<Vector<TileNode>>;
     private var input:Input;
@@ -125,14 +125,13 @@ class TileSystem extends ListIteratingSystem<TileNode>
         return coords.x >= 0 && coords.x < grid.length && coords.y >= 0 && coords.y < grid[coords.x].length;
     }
 
-    private function isRoad(coords:IntVector2)
+    public function isRoad(coords:IntVector2)
     {
         return areCoordsOnMap(coords) && grid[coords.x][coords.y].tile.type == Road;
     }
 
     private function onNodeAdded(node:TileNode):Void
     {
-        var button = 1;
         var e:Entity = node.entity;
         var p = e.position;
 
@@ -149,12 +148,12 @@ class TileSystem extends ListIteratingSystem<TileNode>
         checkTexture(node);
     }
 
-    private function getCarFromIso(i:Float, j:Float):Vector2
+    static public function getCarFromIso(i:Float, j:Float):Vector2
     {
         return new Vector2((i + 2.0*j) / 2.0, (2.0*j - i )/2.0);
     }
 
-    private function getIsoFromCar(x:Float, y:Float):Vector2
+    static public function getIsoFromCar(x:Float, y:Float):Vector2
     {
         return new Vector2(x - y, (x + y) / 2.0);
     }
@@ -205,7 +204,6 @@ class TileSystem extends ListIteratingSystem<TileNode>
                 {
                     n = true;
                 }
-
 
                 if(n && s && e && w)
                 {
