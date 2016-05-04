@@ -11,6 +11,7 @@ class CameraSystem extends ListIteratingSystem<CameraNode>
     private var input:Input;
     private var startPosition:Vector3;
     private var startMousePosition:IntVector2;
+    public var mouseWorldPosition:Vector3;
 
     public function new()
     {
@@ -20,22 +21,24 @@ class CameraSystem extends ListIteratingSystem<CameraNode>
 
     private function updateNode(node:CameraNode, dt:Float):Void
     {
-        var button = 1;
+        var button = 1 << 2;
         var e:Entity = node.entity;
         var p = e.position;
+        var mousePosition = input.getMousePosition();
 
         if(input.getMouseButtonPress(button))
         {
             startPosition = p;
-            startMousePosition = input.getMousePosition();
+            startMousePosition = mousePosition;
         }
         else if(input.getMouseButtonDown(button))
         {
-            var mousePosition = input.getMousePosition();
             p.x = startPosition.x - mousePosition.x + startMousePosition.x;
             p.y = startPosition.y + mousePosition.y - startMousePosition.y;
         }
 
         e.setPosition(p);
+
+        mouseWorldPosition = node.camera.screenToWorldPoint(new Vector2(mousePosition.x / 800, mousePosition.y / 600));
     }
 }

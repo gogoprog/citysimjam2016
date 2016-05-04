@@ -57,26 +57,5 @@ class Application
         viewport.setScene(Gengine.getScene());
         viewport.setCamera(cameraEntity.get(Camera));
         Gengine.getRenderer().setViewport(0, viewport);
-
-        var size = 5;
-
-        for(i in 0...size)
-        {
-            for(j in 0...size)
-            {
-                addTile(i, j);
-            }
-        }
-    }
-
-    public static function addTile(x:Int, y:Int)
-    {
-        var e = new Entity();
-        e.add(new StaticSprite2D());
-        e.add(new Tile(new IntVector2(x, y)));
-        var staticSprite2D:StaticSprite2D = e.get(StaticSprite2D);
-        var texture = Math.random() < 0.5 ? "dirt.png" : "grass.png";
-        staticSprite2D.setSprite(Gengine.getResourceCache().getSprite2D(texture, true));
-        engine.addEntity(e);
     }
 }
