@@ -27,7 +27,10 @@ class TileSystem extends ListIteratingSystem<TileNode>
 
         sprites["dirt"] = Gengine.getResourceCache().getSprite2D("dirt.png", true);
         sprites["grass"] = Gengine.getResourceCache().getSprite2D("grass.png", true);
-        sprites["roadEast"] = Gengine.getResourceCache().getSprite2D("roadEast.png", true);
+        sprites["roadH"] = Gengine.getResourceCache().getSprite2D("roadEast.png", true);
+        sprites["roadV"] = Gengine.getResourceCache().getSprite2D("roadNorth.png", true);
+        sprites["crossroad"] = Gengine.getResourceCache().getSprite2D("crossroad.png", true);
+        sprites["lot"] = Gengine.getResourceCache().getSprite2D("lot.png", true);
     }
 
     override public function addToEngine(_engine:Engine)
@@ -58,16 +61,17 @@ class TileSystem extends ListIteratingSystem<TileNode>
 
         if(areCoordsOnMap(mouseCoords))
         {
-            grid[mouseCoords.x][mouseCoords.y].sprite.setColor(new Color(1, 1, 1, 0.5));
+            grid[mouseCoords.x][mouseCoords.y].sprite.setColor(new Color(0.3, 0.3, 1, 0.7));
+
+            if(input.getMouseButtonPress(button))
+            {
+                grid[mouseCoords.x][mouseCoords.y].tile.type = Road;
+                checkTexture(grid[mouseCoords.x][mouseCoords.y]);
+            }
         }
 
         previousMouseCoords.x = mouseCoords.x;
         previousMouseCoords.y = mouseCoords.y;
-
-        if(input.getMouseButtonPress(button))
-        {
-
-        }
     }
 
     public function generateMap(size:Int)
@@ -88,6 +92,11 @@ class TileSystem extends ListIteratingSystem<TileNode>
     private function areCoordsOnMap(coords:IntVector2)
     {
         return coords.x >= 0 && coords.x < grid.length && coords.y >= 0 && coords.y < grid[coords.x].length;
+    }
+
+    private function isRoad(coords:IntVector2)
+    {
+        return areCoordsOnMap(coords) && grid[coords.x][coords.y].tile.type == Road;
     }
 
     private function onNodeAdded(node:TileNode):Void
@@ -130,6 +139,8 @@ class TileSystem extends ListIteratingSystem<TileNode>
 
     private function checkTexture(node:TileNode)
     {
+        var coords = node.tile.coords;
+
         switch(node.tile.type)
         {
             case Dirt:
@@ -139,7 +150,35 @@ class TileSystem extends ListIteratingSystem<TileNode>
                 node.sprite.setSprite(sprites["grass"]);
 
             case Road:
-                node.sprite.setSprite(sprites["road"]);
+                var vertical = false;
+                var horizontal = false;
+
+                if(isRoad(new IntVector2(coords.x - 1, coords.y)) || isRoad(new IntVector2(coords.x + 1, coords.y)))
+                {
+                    horizontal = true;
+                }
+
+                if(isRoad(new IntVector2(coords.x, coords.y - 1)) || isRoad(new IntVector2(coords.x, coords.y + 1)))
+                {
+                    vertical = true;
+                }
+
+                if(horizontal && vertical)
+                {
+                    node.sprite.setSprite(sprites["crossroad"]);
+                }
+                else if(horizontal)
+                {
+                    node.sprite.setSprite(sprites["roadH"]);
+                }
+                else if(vertical)
+                {
+                    node.sprite.setSprite(sprites["roadV"]);
+                }
+                else
+                {
+                    node.sprite.setSprite(sprites["lot"]);
+                }
         }
     }
 }
