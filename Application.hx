@@ -45,7 +45,7 @@ class Application
         engine.addSystem(new CameraSystem(), 0);
         engine.addSystem(new TileSystem(), 0);
 
-        Gengine.getRenderer().getDefaultZone().setFogColor(new Color(1,1,1,1));
+        Gengine.getRenderer().getDefaultZone().setFogColor(new Color(0.3,0.7,0.7,1));
 
         var cameraEntity = new Entity();
         cameraEntity.add(new Camera());

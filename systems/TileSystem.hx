@@ -31,6 +31,14 @@ class TileSystem extends ListIteratingSystem<TileNode>
         sprites["roadV"] = Gengine.getResourceCache().getSprite2D("roadNorth.png", true);
         sprites["crossroad"] = Gengine.getResourceCache().getSprite2D("crossroad.png", true);
         sprites["lot"] = Gengine.getResourceCache().getSprite2D("lot.png", true);
+        sprites["roadCornerES"] = Gengine.getResourceCache().getSprite2D("roadCornerES.png", true);
+        sprites["roadCornerNE"] = Gengine.getResourceCache().getSprite2D("roadCornerNE.png", true);
+        sprites["roadCornerNW"] = Gengine.getResourceCache().getSprite2D("roadCornerNW.png", true);
+        sprites["roadCornerWS"] = Gengine.getResourceCache().getSprite2D("roadCornerWS.png", true);
+        sprites["roadTN"] = Gengine.getResourceCache().getSprite2D("roadTNorth.png", true);
+        sprites["roadTE"] = Gengine.getResourceCache().getSprite2D("roadTEast.png", true);
+        sprites["roadTS"] = Gengine.getResourceCache().getSprite2D("roadTSouth.png", true);
+        sprites["roadTW"] = Gengine.getResourceCache().getSprite2D("roadTWest.png", true);
     }
 
     override public function addToEngine(_engine:Engine)
@@ -65,8 +73,31 @@ class TileSystem extends ListIteratingSystem<TileNode>
 
             if(input.getMouseButtonPress(button))
             {
-                grid[mouseCoords.x][mouseCoords.y].tile.type = Road;
-                checkTexture(grid[mouseCoords.x][mouseCoords.y]);
+                var x = mouseCoords.x;
+                var y = mouseCoords.y;
+
+                grid[x][y].tile.type = Road;
+                checkTexture(grid[x][y]);
+
+                if(isRoad(new IntVector2(x - 1, y)))
+                {
+                    checkTexture(grid[x - 1][y]);
+                }
+
+                if(isRoad(new IntVector2(x + 1, y)))
+                {
+                    checkTexture(grid[x + 1][y]);
+                }
+
+                if(isRoad(new IntVector2(x, y - 1)))
+                {
+                    checkTexture(grid[x][y - 1]);
+                }
+
+                if(isRoad(new IntVector2(x, y + 1)))
+                {
+                    checkTexture(grid[x][y + 1]);
+                }
             }
         }
 
@@ -150,28 +181,73 @@ class TileSystem extends ListIteratingSystem<TileNode>
                 node.sprite.setSprite(sprites["grass"]);
 
             case Road:
-                var vertical = false;
-                var horizontal = false;
+                var n = false;
+                var s = false;
+                var e = false;
+                var w = false;
 
-                if(isRoad(new IntVector2(coords.x - 1, coords.y)) || isRoad(new IntVector2(coords.x + 1, coords.y)))
+                if(isRoad(new IntVector2(coords.x - 1, coords.y)))
                 {
-                    horizontal = true;
+                    w = true;
                 }
 
-                if(isRoad(new IntVector2(coords.x, coords.y - 1)) || isRoad(new IntVector2(coords.x, coords.y + 1)))
+                if(isRoad(new IntVector2(coords.x + 1, coords.y)))
                 {
-                    vertical = true;
+                    e = true;
                 }
 
-                if(horizontal && vertical)
+                if(isRoad(new IntVector2(coords.x, coords.y - 1)))
+                {
+                    s = true;
+                }
+
+                if(isRoad(new IntVector2(coords.x, coords.y + 1)))
+                {
+                    n = true;
+                }
+
+
+                if(n && s && e && w)
                 {
                     node.sprite.setSprite(sprites["crossroad"]);
                 }
-                else if(horizontal)
+                else if(e && s && w)
+                {
+                    node.sprite.setSprite(sprites["roadTS"]);
+                }
+                else if(w && n && s)
+                {
+                    node.sprite.setSprite(sprites["roadTW"]);
+                }
+                else if(e && n && w)
+                {
+                    node.sprite.setSprite(sprites["roadTN"]);
+                }
+                else if(e && s && n)
+                {
+                    node.sprite.setSprite(sprites["roadTE"]);
+                }
+                else if(e && s)
+                {
+                    node.sprite.setSprite(sprites["roadCornerES"]);
+                }
+                else if(e && n)
+                {
+                    node.sprite.setSprite(sprites["roadCornerNE"]);
+                }
+                else if(w && s)
+                {
+                    node.sprite.setSprite(sprites["roadCornerWS"]);
+                }
+                else if(w && n)
+                {
+                    node.sprite.setSprite(sprites["roadCornerNW"]);
+                }
+                else if(e && w)
                 {
                     node.sprite.setSprite(sprites["roadH"]);
                 }
-                else if(vertical)
+                else if(s && n)
                 {
                     node.sprite.setSprite(sprites["roadV"]);
                 }
