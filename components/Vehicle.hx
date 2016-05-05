@@ -16,6 +16,7 @@ class Vehicle
     public var toCoords:IntVector2;
     public var currentCoords:Vector2;
     public var direction:Direction = N;
+    public var toDirection:Direction;
     public var state:String;
     public var time:Float;
 

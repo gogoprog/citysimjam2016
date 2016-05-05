@@ -9,6 +9,7 @@ import gengine.components.*;
 import systems.*;
 import components.*;
 import haxe.ds.Vector;
+import components.Vehicle;
 
 class TileSystem extends ListIteratingSystem<TileNode>
 {
@@ -128,6 +129,29 @@ class TileSystem extends ListIteratingSystem<TileNode>
     public function isRoad(coords:IntVector2)
     {
         return areCoordsOnMap(coords) && grid[coords.x][coords.y].tile.type == Road;
+    }
+
+    public function getToCoords(coords:IntVector2, direction:Direction)
+    {
+        var toCoords = new IntVector2(coords.x, coords.y);
+
+        switch(direction)
+        {
+            case N:
+                toCoords.x = coords.x;
+                toCoords.y = coords.y + 1;
+            case E:
+                toCoords.x = coords.x + 1;
+                toCoords.y = coords.y;
+            case S:
+                toCoords.x = coords.x;
+                toCoords.y = coords.y - 1;
+            case W:
+                toCoords.x = coords.x - 1;
+                toCoords.y = coords.y;
+        }
+
+        return toCoords;
     }
 
     private function onNodeAdded(node:TileNode):Void

@@ -9,20 +9,21 @@ import ash.fsm.EntityStateMachine;
 import gengine.components.*;
 import systems.*;
 import components.*;
+import components.Vehicle;
 
 class VehicleSystem extends ListIteratingSystem<VehicleNode>
 {
     private var engine:Engine;
-    private var sprites = new Map<String, Dynamic>();
+    private var sprites = new Map<Direction, Dynamic>();
 
     public function new()
     {
         super(VehicleNode, updateNode, onNodeAdded);
 
-        sprites["N"] = Gengine.getResourceCache().getSprite2D("garbage_NW.png", true);
-        sprites["E"] = Gengine.getResourceCache().getSprite2D("garbage_NE.png", true);
-        sprites["S"] = Gengine.getResourceCache().getSprite2D("garbage_SE.png", true);
-        sprites["W"] = Gengine.getResourceCache().getSprite2D("garbage_SW.png", true);
+        sprites[N] = Gengine.getResourceCache().getSprite2D("garbage_NW.png", true);
+        sprites[E] = Gengine.getResourceCache().getSprite2D("garbage_NE.png", true);
+        sprites[S] = Gengine.getResourceCache().getSprite2D("garbage_SE.png", true);
+        sprites[W] = Gengine.getResourceCache().getSprite2D("garbage_SW.png", true);
     }
 
     override public function addToEngine(_engine:Engine)
@@ -46,46 +47,21 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
 
         if(node.vehicle.state == "idling")
         {
-            var itCanMove = false;
             v.toCoords.x = x;
             v.toCoords.y = y;
 
-            switch(node.vehicle.direction)
-            {
-                case N:
-                    if(ts.isRoad(new IntVector2(x, y + 1)))
-                    {
-                        v.toCoords.y = y + 1;
-                        node.sprite.setSprite(sprites["N"]);
-                        itCanMove = true;
-                    }
-                case E:
-                    if(ts.isRoad(new IntVector2(x + 1, y)))
-                    {
-                        v.toCoords.x = x + 1;
-                        node.sprite.setSprite(sprites["W"]);
-                        itCanMove = true;
-                    }
-                case S:
-                    if(ts.isRoad(new IntVector2(x, y - 1)))
-                    {
-                        v.toCoords.y = y - 1;
-                        node.sprite.setSprite(sprites["S"]);
-                        itCanMove = true;
-                    }
-                case W:
-                    if(ts.isRoad(new IntVector2(x - 1, y)))
-                    {
-                        v.toCoords.x = x - 1;
-                        node.sprite.setSprite(sprites["W"]);
-                        itCanMove = true;
-                    }
-            }
+            v.toCoords = ts.getToCoords(coords, v.direction);
 
-            if(itCanMove)
+            if(ts.isRoad(v.toCoords))
             {
+                node.sprite.setSprite(sprites[v.direction]);
+
                 v.time = 0;
                 v.state = "moving";
+            }
+            else
+            {
+
             }
         }
         else if(node.vehicle.state == "moving")
