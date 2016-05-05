@@ -5,6 +5,7 @@ import gengine.input.*;
 import gengine.*;
 import nodes.*;
 import ash.tools.ListIteratingSystem;
+import ash.fsm.EntityStateMachine;
 import gengine.components.*;
 import systems.*;
 import components.*;
@@ -12,10 +13,16 @@ import components.*;
 class VehicleSystem extends ListIteratingSystem<VehicleNode>
 {
     private var engine:Engine;
+    private var sprites = new Map<String, Dynamic>();
 
     public function new()
     {
         super(VehicleNode, updateNode, onNodeAdded);
+
+        sprites["N"] = Gengine.getResourceCache().getSprite2D("garbage_NW.png", true);
+        sprites["E"] = Gengine.getResourceCache().getSprite2D("garbage_NE.png", true);
+        sprites["S"] = Gengine.getResourceCache().getSprite2D("garbage_SE.png", true);
+        sprites["W"] = Gengine.getResourceCache().getSprite2D("garbage_SW.png", true);
     }
 
     override public function addToEngine(_engine:Engine)
@@ -31,6 +38,90 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
 
     private function updateNode(node:VehicleNode, dt:Float):Void
     {
+        var ts = engine.getSystem(TileSystem);
+        var v = node.vehicle;
+        var coords = v.fromCoords;
+        var x = coords.x;
+        var y = coords.y;
+
+        if(node.vehicle.state == "idling")
+        {
+            var itCanMove = false;
+            v.toCoords.x = x;
+            v.toCoords.y = y;
+
+            switch(node.vehicle.direction)
+            {
+                case N:
+                    if(ts.isRoad(new IntVector2(x, y + 1)))
+                    {
+                        v.toCoords.y = y + 1;
+                        node.sprite.setSprite(sprites["N"]);
+                        itCanMove = true;
+                    }
+                case E:
+                    if(ts.isRoad(new IntVector2(x + 1, y)))
+                    {
+                        v.toCoords.x = x + 1;
+                        node.sprite.setSprite(sprites["W"]);
+                        itCanMove = true;
+                    }
+                case S:
+                    if(ts.isRoad(new IntVector2(x, y - 1)))
+                    {
+                        v.toCoords.y = y - 1;
+                        node.sprite.setSprite(sprites["S"]);
+                        itCanMove = true;
+                    }
+                case W:
+                    if(ts.isRoad(new IntVector2(x - 1, y)))
+                    {
+                        v.toCoords.x = x - 1;
+                        node.sprite.setSprite(sprites["W"]);
+                        itCanMove = true;
+                    }
+            }
+
+            if(itCanMove)
+            {
+                v.time = 0;
+                v.state = "moving";
+            }
+        }
+        else if(node.vehicle.state == "moving")
+        {
+            var p = node.entity.position;
+            var duration = 1.0;
+
+            v.time += dt;
+
+            if(v.time >= duration)
+            {
+                v.time = duration;
+                v.state = "idling";
+            }
+
+            var f = v.time / duration;
+
+            v.currentCoords.x = v.fromCoords.x + (v.toCoords.x - v.fromCoords.x) * f;
+            v.currentCoords.y = v.fromCoords.y + (v.toCoords.y - v.fromCoords.y) * f;
+
+            var converted = TileSystem.getIsoFromCar(v.currentCoords.x, v.currentCoords.y);
+
+            p.x = converted.x * TileSystem.tileSize;
+            p.y = converted.y * TileSystem.tileSize;
+
+            node.sprite.setLayer(cast(-p.y) + 1);
+            p.y += 5;
+
+            node.entity.setPosition(p);
+
+            if(v.state == "idling")
+            {
+                v.fromCoords.x = v.toCoords.x;
+                v.fromCoords.y = v.toCoords.y;
+            }
+        }
     }
 
     private function onNodeAdded(node:VehicleNode):Void
@@ -56,7 +147,12 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
     {
         var e = new Entity();
         e.add(new StaticSprite2D());
-        e.add(new Vehicle(new IntVector2(x, y)));
+        e.add(new Vehicle());
+        e.get(Vehicle).fromCoords = new IntVector2(x, y);
+        e.get(Vehicle).toCoords = new IntVector2(x, y);
+        e.get(Vehicle).currentCoords = new Vector2(x, y);
+        e.get(Vehicle).state = "idling";
+
         engine.addEntity(e);
         return e;
     }
