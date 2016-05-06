@@ -14,6 +14,7 @@ import components.Vehicle;
 class VehicleSystem extends ListIteratingSystem<VehicleNode>
 {
     private var engine:Engine;
+    private var offsetY = 10;
     private var sprites = new Map<Direction, Dynamic>();
 
     public function new()
@@ -105,7 +106,7 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
             p.y = converted.y * TileSystem.tileSize;
 
             node.sprite.setLayer(cast(-p.y) + 1);
-            p.y += 5;
+            p.y += offsetY;
 
             node.entity.setPosition(p);
 
@@ -129,7 +130,7 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
         p.y = v.y * TileSystem.tileSize;
 
         node.sprite.setLayer(cast(-p.y) + 1);
-        p.y += 5;
+        p.y += offsetY;
 
         e.setPosition(p);
 
