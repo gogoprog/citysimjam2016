@@ -61,7 +61,24 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
             }
             else
             {
+                for(d in Type.allEnums(Direction))
+                {
+                    if((d.getIndex() + 2) % 4 == v.direction.getIndex())
+                    {
+                        continue;
+                    }
 
+                    v.toCoords = ts.getToCoords(coords, d);
+
+                    if(ts.isRoad(v.toCoords))
+                    {
+                        node.sprite.setSprite(sprites[d]);
+                        v.direction = d;
+                        v.time = 0;
+                        v.state = "moving";
+                        break;
+                    }
+                }
             }
         }
         else if(node.vehicle.state == "moving")
