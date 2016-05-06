@@ -80,6 +80,21 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
                         break;
                     }
                 }
+
+                if(v.state == "idling")
+                {
+                    var d = Direction.createByIndex((v.direction.getIndex() + 2) % 4);
+
+                    v.toCoords = ts.getToCoords(coords, d);
+
+                    if(ts.isRoad(v.toCoords))
+                    {
+                        node.sprite.setSprite(sprites[d]);
+                        v.direction = d;
+                        v.time = 0;
+                        v.state = "moving";
+                    }
+                }
             }
         }
         else if(node.vehicle.state == "moving")

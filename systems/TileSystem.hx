@@ -40,6 +40,10 @@ class TileSystem extends ListIteratingSystem<TileNode>
         sprites["roadTE"] = Gengine.getResourceCache().getSprite2D("roadTEast.png", true);
         sprites["roadTS"] = Gengine.getResourceCache().getSprite2D("roadTSouth.png", true);
         sprites["roadTW"] = Gengine.getResourceCache().getSprite2D("roadTWest.png", true);
+        sprites["roadEndN"] = Gengine.getResourceCache().getSprite2D("roadEndNorth.png", true);
+        sprites["roadEndE"] = Gengine.getResourceCache().getSprite2D("roadEndEast.png", true);
+        sprites["roadEndS"] = Gengine.getResourceCache().getSprite2D("roadEndSouth.png", true);
+        sprites["roadEndW"] = Gengine.getResourceCache().getSprite2D("roadEndWest.png", true);
     }
 
     override public function addToEngine(_engine:Engine)
@@ -77,7 +81,15 @@ class TileSystem extends ListIteratingSystem<TileNode>
                 var x = mouseCoords.x;
                 var y = mouseCoords.y;
 
-                grid[x][y].tile.type = Road;
+                if(grid[x][y].tile.type == Dirt)
+                {
+                    grid[x][y].tile.type = Road;
+                }
+                else
+                {
+                    grid[x][y].tile.type = Dirt;
+                }
+
                 checkTexture(grid[x][y]);
 
                 if(isRoad(new IntVector2(x - 1, y)))
@@ -272,6 +284,22 @@ class TileSystem extends ListIteratingSystem<TileNode>
                 else if(s && n)
                 {
                     node.sprite.setSprite(sprites["roadV"]);
+                }
+                else if(n)
+                {
+                    node.sprite.setSprite(sprites["roadEndN"]);
+                }
+                else if(w)
+                {
+                    node.sprite.setSprite(sprites["roadEndW"]);
+                }
+                else if(e)
+                {
+                    node.sprite.setSprite(sprites["roadEndE"]);
+                }
+                else if(s)
+                {
+                    node.sprite.setSprite(sprites["roadEndS"]);
                 }
                 else
                 {
