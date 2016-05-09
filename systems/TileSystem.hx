@@ -10,6 +10,7 @@ import systems.*;
 import components.*;
 import haxe.ds.Vector;
 import components.Vehicle;
+import components.Tile;
 
 class TileSystem extends ListIteratingSystem<TileNode>
 {
@@ -133,8 +134,11 @@ class TileSystem extends ListIteratingSystem<TileNode>
             }
         }
 
-        grid[4][4].tile.type = Client;
+        grid[4][4].tile.type = Home;
         checkTexture(grid[4][4]);
+
+        grid[8][4].tile.type = Client;
+        checkTexture(grid[8][4]);
     }
 
     private function areCoordsOnMap(coords:IntVector2)
@@ -144,7 +148,37 @@ class TileSystem extends ListIteratingSystem<TileNode>
 
     public function isRoad(coords:IntVector2)
     {
-        return areCoordsOnMap(coords) && grid[coords.x][coords.y].tile.type == Road;
+        return isType(coords, Road);
+    }
+
+    public function isType(coords:IntVector2, type:TileType)
+    {
+        return areCoordsOnMap(coords) && grid[coords.x][coords.y].tile.type == type;
+    }
+
+    public function isNextToType(coords:IntVector2, type:TileType)
+    {
+        if(isType(new IntVector2(coords.x - 1, coords.y), type))
+        {
+            return true;
+        }
+
+        if(isType(new IntVector2(coords.x + 1, coords.y), type))
+        {
+            return true;
+        }
+
+        if(isType(new IntVector2(coords.x, coords.y - 1), type))
+        {
+            return true;
+        }
+
+        if(isType(new IntVector2(coords.x, coords.y + 1), type))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public function getToCoords(coords:IntVector2, direction:Direction)

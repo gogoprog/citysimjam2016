@@ -102,7 +102,7 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
         else if(node.vehicle.state == "moving")
         {
             var p = node.entity.position;
-            var duration = 1.0;
+            var duration = 0.5;
 
             v.time += dt;
 
@@ -131,6 +131,45 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
             {
                 v.fromCoords.x = v.toCoords.x;
                 v.fromCoords.y = v.toCoords.y;
+
+                if(!v.hasPackage)
+                {
+                    if(ts.isNextToType(v.fromCoords, Home))
+                    {
+                        v.state = "loading";
+                        v.time = 0;
+                    }
+                }
+                else
+                {
+                    if(ts.isNextToType(v.fromCoords, Client))
+                    {
+                        v.state = "delivering";
+                        v.time = 0;
+                    }
+                }
+            }
+        }
+        else if(node.vehicle.state == "loading")
+        {
+            v.time += dt;
+
+            if(v.time > 0.5)
+            {
+                v.hasPackage = true;
+                v.state = "idling";
+                trace("Loaded!");
+            }
+        }
+        else if(node.vehicle.state == "delivering")
+        {
+            v.time += dt;
+
+            if(v.time > 0.5)
+            {
+                v.hasPackage = false;
+                v.state = "idling";
+                trace("Delivered!");
             }
         }
     }
