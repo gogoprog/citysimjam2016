@@ -53,7 +53,7 @@ class TileSystem extends ListIteratingSystem<TileNode>
 
         engine = _engine;
 
-        generateMap(10);
+        generateMap(20);
     }
 
     override public function update(dt:Float)
@@ -86,7 +86,7 @@ class TileSystem extends ListIteratingSystem<TileNode>
                 {
                     grid[x][y].tile.type = Road;
                 }
-                else
+                else if(grid[x][y].tile.type == Road)
                 {
                     grid[x][y].tile.type = Dirt;
                 }
@@ -132,7 +132,6 @@ class TileSystem extends ListIteratingSystem<TileNode>
                 addTile(i, j);
             }
         }
-
 
         grid[4][4].tile.type = Client;
         checkTexture(grid[4][4]);

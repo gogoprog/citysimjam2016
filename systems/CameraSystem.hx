@@ -40,7 +40,7 @@ class CameraSystem extends ListIteratingSystem<CameraNode>
 
         e.setPosition(p);
 
-        mouseWorldPosition = node.camera.screenToWorldPoint(new Vector2(mousePosition.x / 800, mousePosition.y / 600));
+        mouseWorldPosition = node.camera.screenToWorldPoint(new Vector2(mousePosition.x / 1024, mousePosition.y / 768));
 
         var w = input.getMouseMoveWheel();
         if(w != 0)

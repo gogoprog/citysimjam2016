@@ -16,6 +16,7 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
     private var engine:Engine;
     private var offsetY = 10;
     private var sprites = new Map<Direction, Dynamic>();
+    private var tileSystem:TileSystem;
 
     public function new()
     {
@@ -31,6 +32,7 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
     {
         super.addToEngine(_engine);
         engine = _engine;
+        tileSystem = engine.getSystem(TileSystem);
 
         spawn(2, 3);
         spawn(5, 6);
@@ -40,7 +42,7 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
 
     private function updateNode(node:VehicleNode, dt:Float):Void
     {
-        var ts = engine.getSystem(TileSystem);
+        var ts = tileSystem;
         var v = node.vehicle;
         var coords = v.fromCoords;
         var x = coords.x;
