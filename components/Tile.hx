@@ -6,6 +6,8 @@ enum TileType {
     Dirt;
     Grass;
     Road;
+    Client;
+    Home;
 }
 
 class Tile

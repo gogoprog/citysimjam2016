@@ -19,6 +19,7 @@ class Vehicle
     public var toDirection:Direction;
     public var state:String;
     public var time:Float;
+    public var hasPackage:Bool = false;
 
     public function new()
     {

@@ -44,6 +44,7 @@ class TileSystem extends ListIteratingSystem<TileNode>
         sprites["roadEndE"] = Gengine.getResourceCache().getSprite2D("roadEndEast.png", true);
         sprites["roadEndS"] = Gengine.getResourceCache().getSprite2D("roadEndSouth.png", true);
         sprites["roadEndW"] = Gengine.getResourceCache().getSprite2D("roadEndWest.png", true);
+        sprites["building"] = Gengine.getResourceCache().getSprite2D("building.png", true);
     }
 
     override public function addToEngine(_engine:Engine)
@@ -131,6 +132,10 @@ class TileSystem extends ListIteratingSystem<TileNode>
                 addTile(i, j);
             }
         }
+
+
+        grid[4][4].tile.type = Client;
+        checkTexture(grid[4][4]);
     }
 
     private function areCoordsOnMap(coords:IntVector2)
@@ -214,6 +219,12 @@ class TileSystem extends ListIteratingSystem<TileNode>
 
             case Grass:
                 node.sprite.setSprite(sprites["grass"]);
+
+            case Client:
+                node.sprite.setSprite(sprites["building"]);
+
+            case Home:
+                node.sprite.setSprite(sprites["building"]);
 
             case Road:
                 var n = false;
