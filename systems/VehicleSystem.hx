@@ -14,7 +14,6 @@ import components.Vehicle;
 class VehicleSystem extends ListIteratingSystem<VehicleNode>
 {
     private var engine:Engine;
-    private var offsetY = 10;
     private var sprites = new Map<Direction, Dynamic>();
     private var tileSystem:TileSystem;
 
@@ -123,9 +122,7 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
             p.y = converted.y * TileSystem.tileSize;
 
             node.sprite.setLayer(0);
-            node.sprite.setOrderInLayer(Std.int(-p.y) + offsetY + 8);
-
-            p.y += offsetY;
+            node.sprite.setOrderInLayer(Std.int(-p.y) + 16);
 
             node.entity.setPosition(p);
 
@@ -205,13 +202,14 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
         p.y = v.y * TileSystem.tileSize;
 
         node.sprite.setLayer(0);
-        node.sprite.setOrderInLayer(Std.int(-p.y) + offsetY);
-
-        p.y += offsetY;
+        node.sprite.setOrderInLayer(Std.int(-p.y) + 1);
 
         e.setPosition(p);
 
         node.sprite.setSprite(Gengine.getResourceCache().getSprite2D("garbage_NE.png", true));
+
+        node.sprite.setHotSpot(new Vector2(0.5, 0));
+        node.sprite.setUseHotSpot(true);
     }
 
     public function spawn(x:Int, y:Int)
