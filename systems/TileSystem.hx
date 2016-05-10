@@ -21,6 +21,7 @@ class TileSystem extends ListIteratingSystem<TileNode>
     private var mouseCoords = new IntVector2(1, 1);
     private var previousMouseCoords = new IntVector2(1, 1);
     private var sprites = new Map<String, Dynamic>();
+    public var mapSize:Int;
 
     public function new()
     {
@@ -122,6 +123,7 @@ class TileSystem extends ListIteratingSystem<TileNode>
 
     public function generateMap(size:Int)
     {
+        mapSize = size;
         grid = new Vector<Vector<TileNode>>(size);
 
         for(i in 0...size)
@@ -216,7 +218,9 @@ class TileSystem extends ListIteratingSystem<TileNode>
         p.y = v.y * tileSize;
 
         e.setPosition(p);
-        node.sprite.setLayer(cast(-p.y));
+        node.sprite.setLayer(0);
+        node.sprite.setOrderInLayer(Std.int(-p.y));
+
         grid[c.x][c.y] = node;
 
         checkTexture(node);

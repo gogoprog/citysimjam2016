@@ -122,7 +122,9 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
             p.x = converted.x * TileSystem.tileSize;
             p.y = converted.y * TileSystem.tileSize;
 
-            node.sprite.setLayer(cast(-p.y) + 1);
+            node.sprite.setLayer(0);
+            node.sprite.setOrderInLayer(Std.int(-p.y) + offsetY + 8);
+
             p.y += offsetY;
 
             node.entity.setPosition(p);
@@ -195,14 +197,16 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
     {
         var e:Entity = node.entity;
         var p = e.position;
-
+        var ts = engine.getSystem(TileSystem);
         var c = node.vehicle.fromCoords;
         var v = TileSystem.getIsoFromCar(c.x, c.y);
 
         p.x = v.x * TileSystem.tileSize;
         p.y = v.y * TileSystem.tileSize;
 
-        node.sprite.setLayer(cast(-p.y) + 1);
+        node.sprite.setLayer(0);
+        node.sprite.setOrderInLayer(Std.int(-p.y) + offsetY);
+
         p.y += offsetY;
 
         e.setPosition(p);
