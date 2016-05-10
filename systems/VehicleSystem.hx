@@ -127,6 +127,23 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
 
             node.entity.setPosition(p);
 
+            for(otherNode in nodeList)
+            {
+                if(otherNode != node)
+                {
+                    var otherPos = otherNode.entity.position;
+                    var dx = Math.abs(otherPos.x - p.x);
+                    var dy = Math.abs(otherPos.y - p.y);
+
+                    if(dx < 15 && dy < 15)
+                    {
+                        v.state = "crashed";
+                        otherNode.vehicle.state = "crashed";
+                        break;
+                    }
+                }
+            }
+
             if(v.state == "idling")
             {
                 v.fromCoords.x = v.toCoords.x;
