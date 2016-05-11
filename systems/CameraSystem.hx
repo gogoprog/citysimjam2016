@@ -13,11 +13,17 @@ class CameraSystem extends ListIteratingSystem<CameraNode>
     private var startMousePosition:IntVector2;
     private var zoom = 1.0;
     public var mouseWorldPosition:Vector3;
+    public var cameraNode:CameraNode;
 
     public function new()
     {
-        super(CameraNode, updateNode);
+        super(CameraNode, updateNode, onNodeAdded);
         input = Gengine.getInput();
+    }
+
+    private function onNodeAdded(node:CameraNode)
+    {
+        cameraNode = node;
     }
 
     private function updateNode(node:CameraNode, dt:Float):Void

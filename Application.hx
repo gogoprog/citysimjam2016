@@ -36,7 +36,6 @@ class Application
         cameraEntity.add(new Camera());
         cameraEntity.get(Camera).setOrthoSize(new Vector2(1024, 768));
         cameraEntity.get(Camera).setOrthographic(true);
-        cameraEntity.setPosition(new Vector3(0, 25 * 6, 0));
 
         engine.addEntity(cameraEntity);
 
@@ -44,5 +43,7 @@ class Application
         viewport.setScene(Gengine.getScene());
         viewport.setCamera(cameraEntity.get(Camera));
         Gengine.getRenderer().setViewport(0, viewport);
+
+        engine.getSystem(TileSystem).generateMap(10);
     }
 }

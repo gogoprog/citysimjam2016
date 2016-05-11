@@ -54,8 +54,6 @@ class TileSystem extends ListIteratingSystem<TileNode>
         super.addToEngine(_engine);
 
         engine = _engine;
-
-        generateMap(10);
     }
 
     override public function update(dt:Float)
@@ -152,6 +150,12 @@ class TileSystem extends ListIteratingSystem<TileNode>
 
         grid[8][4].tile.type = Client;
         checkTexture(grid[8][4]);
+
+        var c = getIsoFromCar(size * 0.5 * tileSize, size * 0.5 * tileSize);
+        var p = new Vector3(0, 0, 0);
+        p.x = c.x;
+        p.y = c.y;
+        engine.getSystem(CameraSystem).cameraNode.entity.setPosition(p);
     }
 
     private function areCoordsOnMap(coords:IntVector2)
