@@ -19,12 +19,6 @@ class Application
 
     public static function start(_engine:Engine)
     {
-        untyped __js__("
-            if(typeof $ !== 'undefined') {
-                $('#gui').remove();
-            }
-        ");
-
         engine = _engine;
 
         engine.addSystem(new GameSystem(), 0);
