@@ -12,6 +12,8 @@ class CameraSystem extends ListIteratingSystem<CameraNode>
     private var startPosition:Vector3;
     private var startMousePosition:IntVector2;
     private var zoom = 1.0;
+    private var gameSystem:GameSystem;
+
     public var mouseWorldPosition:Vector3;
     public var cameraNode:CameraNode;
 
@@ -21,6 +23,12 @@ class CameraSystem extends ListIteratingSystem<CameraNode>
         input = Gengine.getInput();
     }
 
+    override public function addToEngine(_engine:Engine)
+    {
+        super.addToEngine(_engine);
+        gameSystem = _engine.getSystem(GameSystem);
+    }
+
     private function onNodeAdded(node:CameraNode)
     {
         cameraNode = node;
@@ -28,6 +36,11 @@ class CameraSystem extends ListIteratingSystem<CameraNode>
 
     private function updateNode(node:CameraNode, dt:Float):Void
     {
+        if(!gameSystem.isPlaying())
+        {
+            return;
+        }
+
         var button = 1 << 2;
         var e:Entity = node.entity;
         var p = e.position;

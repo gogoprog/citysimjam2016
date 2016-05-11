@@ -16,6 +16,7 @@ class TileSystem extends ListIteratingSystem<TileNode>
 {
     static public var tileSize = 50;
     private var engine:Engine;
+    private var gameSystem:GameSystem;
     private var grid:Vector<Vector<TileNode>>;
     private var input:Input;
     private var mouseCoords = new IntVector2(1, 1);
@@ -26,6 +27,7 @@ class TileSystem extends ListIteratingSystem<TileNode>
     public function new()
     {
         super(TileNode, null, onNodeAdded);
+
         input = Gengine.getInput();
 
         sprites["dirt"] = Gengine.getResourceCache().getSprite2D("dirt.png", true);
@@ -54,11 +56,19 @@ class TileSystem extends ListIteratingSystem<TileNode>
         super.addToEngine(_engine);
 
         engine = _engine;
+
+        gameSystem = engine.getSystem(GameSystem);
     }
 
     override public function update(dt:Float)
     {
         super.update(dt);
+
+        if(!gameSystem.isPlaying())
+        {
+            return;
+        }
+
         var button = 1;
 
         var coords = new IntVector2(0, 0);

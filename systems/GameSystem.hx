@@ -10,6 +10,7 @@ class GameSystem extends System
 {
     private var input:Input;
     private var engine:Engine;
+    private var playing = false;
 
     public function new()
     {
@@ -33,8 +34,13 @@ class GameSystem extends System
 
         if(input.getScancodePress(44))
         {
-            trace("test");
             engine.getSystem(TileSystem).generateMap(20);
+            playing = true;
         }
+    }
+
+    public function isPlaying()
+    {
+        return playing;
     }
 }
