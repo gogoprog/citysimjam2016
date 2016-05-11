@@ -70,12 +70,12 @@ class TileSystem extends ListIteratingSystem<TileNode>
 
         if(areCoordsOnMap(previousMouseCoords))
         {
-            grid[previousMouseCoords.x][previousMouseCoords.y].sprite.setColor(new Color(1, 1, 1, 1));
+            grid[previousMouseCoords.x][previousMouseCoords.y].sprite.setAlpha(1);
         }
 
         if(areCoordsOnMap(mouseCoords))
         {
-            grid[mouseCoords.x][mouseCoords.y].sprite.setColor(new Color(0.3, 0.3, 1, 0.7));
+            grid[mouseCoords.x][mouseCoords.y].sprite.setAlpha(0.7);
 
             if(input.getMouseButtonPress(button))
             {
@@ -277,6 +277,7 @@ class TileSystem extends ListIteratingSystem<TileNode>
 
             case Home:
                 node.sprite.setSprite(sprites["building"]);
+                node.sprite.setColor(new Color(0.6, 0.6, 0, 1));
 
             case Road:
                 var n = false;
