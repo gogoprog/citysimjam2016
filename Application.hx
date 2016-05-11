@@ -4,6 +4,7 @@ import gengine.components.*;
 import gengine.graphics.*;
 import systems.*;
 import components.*;
+import Gui;
 
 class Application
 {
@@ -13,6 +14,7 @@ class Application
     {
         Gengine.setWindowSize(new IntVector2(1024, 768));
         Gengine.setWindowTitle("citysimjam2016");
+        Gengine.setGuiFilename("gui/gui.html");
     }
 
     public static function start(_engine:Engine)
@@ -30,7 +32,7 @@ class Application
         engine.addSystem(new TileSystem(), 0);
         engine.addSystem(new VehicleSystem(), 0);
 
-        Gengine.getRenderer().getDefaultZone().setFogColor(new Color(0.4,0.7,0.7,1));
+        Gengine.getRenderer().getDefaultZone().setFogColor(new Color(0.4, 0.7, 0.7, 1));
 
         var cameraEntity = new Entity();
         cameraEntity.add(new Camera());
@@ -45,5 +47,8 @@ class Application
         Gengine.getRenderer().setViewport(0, viewport);
 
         engine.getSystem(TileSystem).generateMap(10);
+
+        Gui.gameSystem = engine.getSystem(GameSystem);
+        Gui.init();
     }
 }

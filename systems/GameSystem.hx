@@ -6,11 +6,18 @@ import gengine.*;
 import nodes.*;
 import systems.*;
 
+enum Tool
+{
+    None;
+    Road;
+}
+
 class GameSystem extends System
 {
     private var input:Input;
     private var engine:Engine;
     private var playing = false;
+    private var currentTool:Tool;
 
     public function new()
     {
@@ -34,13 +41,29 @@ class GameSystem extends System
 
         if(input.getScancodePress(44))
         {
-            engine.getSystem(TileSystem).generateMap(20);
-            playing = true;
+            start();
         }
     }
 
     public function isPlaying()
     {
         return playing;
+    }
+
+    public function setCurrentTool(tool:Tool)
+    {
+        currentTool = tool;
+    }
+
+    public function getCurrentTool()
+    {
+        return currentTool;
+    }
+
+    public function start()
+    {
+        engine.getSystem(TileSystem).generateMap(20);
+        playing = true;
+        Gui.showPage("hud");
     }
 }
