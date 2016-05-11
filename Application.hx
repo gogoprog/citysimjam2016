@@ -5,22 +5,6 @@ import gengine.graphics.*;
 import systems.*;
 import components.*;
 
-class ExitSystem extends System
-{
-    public function new()
-    {
-        super();
-    }
-
-    override public function update(dt:Float):Void
-    {
-        if(Gengine.getInput().getScancodePress(41))
-        {
-            Gengine.exit();
-        }
-    }
-}
-
 class Application
 {
     private static var engine:Engine;
@@ -41,7 +25,7 @@ class Application
 
         engine = _engine;
 
-        engine.addSystem(new ExitSystem(), 0);
+        engine.addSystem(new GameSystem(), 0);
         engine.addSystem(new CameraSystem(), 0);
         engine.addSystem(new TileSystem(), 0);
         engine.addSystem(new VehicleSystem(), 0);

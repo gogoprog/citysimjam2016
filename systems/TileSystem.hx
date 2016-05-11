@@ -55,7 +55,7 @@ class TileSystem extends ListIteratingSystem<TileNode>
 
         engine = _engine;
 
-        generateMap(20);
+        generateMap(10);
     }
 
     override public function update(dt:Float)
@@ -123,6 +123,17 @@ class TileSystem extends ListIteratingSystem<TileNode>
 
     public function generateMap(size:Int)
     {
+        if(grid != null)
+        {
+            for(i in 0...grid.length)
+            {
+                for(j in 0...grid[i].length)
+                {
+                    engine.removeEntity(grid[i][j].entity);
+                }
+            }
+        }
+
         mapSize = size;
         grid = new Vector<Vector<TileNode>>(size);
 
