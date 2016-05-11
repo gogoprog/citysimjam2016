@@ -1,6 +1,7 @@
 
 import js.*;
 import systems.*;
+import systems.GameSystem;
 
 @:expose('Gui')
 class Gui
@@ -13,6 +14,13 @@ class Gui
 
         new JQuery(".menu .play").click(function() {
             gameSystem.start();
+        });
+
+        new JQuery("#hud .tools .button").mousedown(function(e) {
+            new JQuery("#hud .button").removeClass("selected");
+            var that = new JQuery(e.delegateTarget);
+            that.addClass("selected");
+            gameSystem.setCurrentTool(Tool.createByIndex(that.index()));
         });
     }
 

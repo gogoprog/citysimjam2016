@@ -10,6 +10,7 @@ enum Tool
 {
     None;
     Road;
+    Remove;
 }
 
 class GameSystem extends System
