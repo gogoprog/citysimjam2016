@@ -2,6 +2,7 @@ package systems;
 
 import gengine.math.*;
 import gengine.input.*;
+import gengine.components.*;
 import gengine.*;
 import nodes.*;
 import systems.*;
@@ -24,6 +25,7 @@ class GameSystem extends System
     private var engine:Engine;
     private var playing = false;
     private var currentTool:Tool;
+    private var musicEntity:Entity;
 
     public function new()
     {
@@ -36,6 +38,15 @@ class GameSystem extends System
         super.addToEngine(_engine);
 
         engine = _engine;
+
+        musicEntity = new Entity();
+        musicEntity.add(new SoundSource());
+
+        engine.addEntity(musicEntity);
+
+        var soundSource:SoundSource = musicEntity.get(SoundSource);
+        soundSource.play(Gengine.getResourceCache().getSound("music.ogg", true));
+        soundSource.setGain(0.5);
     }
 
     override public function update(dt:Float):Void
