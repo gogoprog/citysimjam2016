@@ -32,11 +32,6 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
         super.addToEngine(_engine);
         engine = _engine;
         tileSystem = engine.getSystem(TileSystem);
-
-        /*spawn(2, 3);
-        spawn(5, 6);
-        spawn(6, 6);
-        spawn(8, 2);*/
     }
 
     private function updateNode(node:VehicleNode, dt:Float):Void

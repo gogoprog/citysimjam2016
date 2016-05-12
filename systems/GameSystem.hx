@@ -13,6 +13,11 @@ enum Tool
     Remove;
 }
 
+enum Action
+{
+    BuyCar;
+}
+
 class GameSystem extends System
 {
     private var input:Input;
@@ -66,5 +71,14 @@ class GameSystem extends System
         engine.getSystem(TileSystem).generateMap(20);
         playing = true;
         Gui.showPage("hud");
+    }
+
+    public function doAction(action:Action)
+    {
+        switch(action)
+        {
+            case BuyCar:
+                engine.getSystem(VehicleSystem).spawn(4, 4);
+        }
     }
 }

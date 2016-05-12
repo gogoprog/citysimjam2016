@@ -114,3 +114,11 @@ h1 {
     border: solid blue 4px;
     color:black;
 }
+
+#hud .buttons .actions .button {
+    color:black;
+}
+
+#hud .button.car .icon{
+    background-image: url('/gui/truck.png');
+}

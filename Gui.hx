@@ -22,6 +22,11 @@ class Gui
             that.addClass("selected");
             gameSystem.setCurrentTool(Tool.createByIndex(that.index()));
         });
+
+        new JQuery("#hud .actions .button").mousedown(function(e) {
+            var that = new JQuery(e.delegateTarget);
+            gameSystem.doAction(Action.createByIndex(that.index()));
+        });
     }
 
     static public function showPage(name:String, ?duration = 200)
