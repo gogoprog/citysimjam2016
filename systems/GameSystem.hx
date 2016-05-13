@@ -6,6 +6,7 @@ import gengine.components.*;
 import gengine.*;
 import nodes.*;
 import systems.*;
+import haxe.ds.Vector;
 
 enum Tool
 {
@@ -26,6 +27,8 @@ class GameSystem extends System
     private var playing = false;
     private var currentTool:Tool;
     private var musicEntity:Entity;
+    private var soundSources:Vector<SoundSource>;
+    private var nextSoundSourceIndex = 0;
 
     public function new()
     {
@@ -47,6 +50,16 @@ class GameSystem extends System
         var soundSource:SoundSource = musicEntity.get(SoundSource);
         soundSource.play(Gengine.getResourceCache().getSound("music.ogg", true));
         soundSource.setGain(0.5);
+
+        soundSources = new Vector<SoundSource>(8);
+
+        for(i in 0...soundSources.length)
+        {
+            var e = new Entity();
+            soundSources[i] = new SoundSource();
+            e.add(soundSources[i]);
+            engine.addEntity(e);
+        }
     }
 
     override public function update(dt:Float):Void
@@ -90,6 +103,13 @@ class GameSystem extends System
         {
             case BuyCar:
                 engine.getSystem(VehicleSystem).spawn(4, 4);
+                playSound("sound.ogg");
         }
+    }
+
+    public function playSound(sound:String)
+    {
+        soundSources[nextSoundSourceIndex++].play(Gengine.getResourceCache().getSound(sound, true));
+        nextSoundSourceIndex %= soundSources.length;
     }
 }
