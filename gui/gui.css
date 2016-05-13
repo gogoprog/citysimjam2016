@@ -1,3 +1,7 @@
+@font-face {
+    font-family: mainFont;
+    src: url(Chivo-Black.ttf);
+}
 
 body, .pages, .pages > div {
     position:absolute;
@@ -7,6 +11,10 @@ body, .pages, .pages > div {
     height:100%;
     padding:0;
     margin:0;
+}
+
+.pages {
+    font-family: mainFont;
 }
 
 h1 {
@@ -74,11 +82,20 @@ h1 {
 #hud .buttons {
     display:block;
     position:absolute;
-    width:12%;
+    width:100%;
     text-align:center;
-    right:0;
-    bottom:10%;
+    top:0;
     background-color: rgba(0, 0, 0, 0.3);
+}
+
+#hud .buttons > div {
+    display:inline-block;
+    margin-left:10px;
+    margin-right:10px;
+    padding-left:10px;
+    padding-right:10px;
+    border: 1px solid black;
+    border-radius: 10px;
 }
 
 #hud .buttons .button {
@@ -88,11 +105,11 @@ h1 {
     font-size:14px;
     display:inline-block;
     height:60px;
-    width:50%;
+    width:80px;
     text-align:center;
     margin-bottom:10px;
     margin-top:10px;
-    border: solid grey 1px;
+    border: solid grey 4px;
 }
 
 #hud .buttons .button .icon{
@@ -121,4 +138,28 @@ h1 {
 
 #hud .button.car .icon{
     background-image: url('/gui/truck.png');
+}
+
+#hud .right {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    width:180px;
+    height:95%;
+}
+
+#hud .right span {
+    display:inline-block;
+    width:100%;
+}
+
+#hud .label {
+    text-align:left;
+    font-size:16px;
+}
+
+#hud .value {
+    color:white;
+    text-align:right;
+    font-size:20px;
 }
