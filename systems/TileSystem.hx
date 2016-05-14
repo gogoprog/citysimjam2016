@@ -93,11 +93,12 @@ class TileSystem extends ListIteratingSystem<TileNode>
                 var y = mouseCoords.y;
                 var mustCheck = false;
 
-                if(gameSystem.getCurrentTool() == Road)
+                if(gameSystem.getCurrentTool() == Road && gameSystem.canAffordCurrentTool())
                 {
                     if(grid[x][y].tile.type == Dirt)
                     {
                         grid[x][y].tile.type = Road;
+                        gameSystem.useCurrentTool();
                         mustCheck = true;
                     }
                 }

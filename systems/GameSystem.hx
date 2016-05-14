@@ -31,11 +31,16 @@ class GameSystem extends System
     private var nextSoundSourceIndex = 0;
     private var money = 0;
     private var deliveredPackages = 0;
+    private var toolCosts:Map<Tool, Int>;
 
     public function new()
     {
         super();
         input = Gengine.getInput();
+
+        toolCosts = new Map<Tool,Int>();
+        toolCosts[Road] = 100;
+        toolCosts[Remove] = 100;
     }
 
     override public function addToEngine(_engine:Engine)
@@ -97,6 +102,9 @@ class GameSystem extends System
         engine.getSystem(TileSystem).generateMap(20);
         playing = true;
         Gui.showPage("hud");
+
+        money = 2000;
+        Gui.setMoney(money);
     }
 
     public function doAction(action:Action)
@@ -113,5 +121,31 @@ class GameSystem extends System
     {
         soundSources[nextSoundSourceIndex++].play(Gengine.getResourceCache().getSound(sound, true));
         nextSoundSourceIndex %= soundSources.length;
+    }
+
+    public function getMoney()
+    {
+        return money;
+    }
+
+    public function canAfford(value:Int)
+    {
+        return money >= value;
+    }
+
+    public function canAffordCurrentTool()
+    {
+        return money >= toolCosts[currentTool];
+    }
+
+    public function useCurrentTool()
+    {
+        cost(toolCosts[currentTool]);
+    }
+
+    public function cost(amount:Int)
+    {
+        money -= amount;
+        Gui.setMoney(money);
     }
 }

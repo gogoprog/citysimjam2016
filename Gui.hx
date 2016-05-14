@@ -34,4 +34,9 @@ class Gui
         new JQuery(".pages > div").fadeOut(duration);
         new JQuery("#" + name).fadeIn(duration);
     }
+
+    static public function setMoney(value:Int)
+    {
+        new JQuery(".money").text(Std.string(value));
+    }
 }
