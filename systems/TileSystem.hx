@@ -97,6 +97,7 @@ class TileSystem extends ListIteratingSystem<TileNode>
                 {
                     if(grid[x][y].tile.type == Dirt)
                     {
+                        gameSystem.playSound("build");
                         grid[x][y].tile.type = Road;
                         gameSystem.useCurrentTool();
                         mustCheck = true;

@@ -16,6 +16,7 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
     private var engine:Engine;
     private var sprites = new Map<Direction, Dynamic>();
     private var tileSystem:TileSystem;
+    private var gameSystem:GameSystem;
 
     public function new()
     {
@@ -32,6 +33,7 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
         super.addToEngine(_engine);
         engine = _engine;
         tileSystem = engine.getSystem(TileSystem);
+        gameSystem = engine.getSystem(GameSystem);
     }
 
     private function updateNode(node:VehicleNode, dt:Float):Void
@@ -181,6 +183,7 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
                 v.hasPackage = false;
                 v.state = "idling";
                 trace("Delivered!");
+                gameSystem.gain(50);
             }
         }
     }

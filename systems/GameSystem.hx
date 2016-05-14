@@ -32,6 +32,7 @@ class GameSystem extends System
     private var money = 0;
     private var deliveredPackages = 0;
     private var toolCosts:Map<Tool, Int>;
+    private var sounds = new Map<String, Dynamic>();
 
     public function new()
     {
@@ -41,6 +42,9 @@ class GameSystem extends System
         toolCosts = new Map<Tool,Int>();
         toolCosts[Road] = 100;
         toolCosts[Remove] = 100;
+
+        sounds["cash"] = Gengine.getResourceCache().getSound("cash.wav", true);
+        sounds["build"] = Gengine.getResourceCache().getSound("build.wav", true);
     }
 
     override public function addToEngine(_engine:Engine)
@@ -113,13 +117,12 @@ class GameSystem extends System
         {
             case BuyCar:
                 engine.getSystem(VehicleSystem).spawn(4, 4);
-                playSound("sound.ogg");
         }
     }
 
     public function playSound(sound:String)
     {
-        soundSources[nextSoundSourceIndex++].play(Gengine.getResourceCache().getSound(sound, true));
+        soundSources[nextSoundSourceIndex++].play(sounds[sound]);
         nextSoundSourceIndex %= soundSources.length;
     }
 
@@ -147,5 +150,12 @@ class GameSystem extends System
     {
         money -= amount;
         Gui.setMoney(money);
+    }
+
+    public function gain(amount:Int)
+    {
+        money += amount;
+        Gui.setMoney(money);
+        playSound("cash");
     }
 }
