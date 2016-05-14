@@ -45,6 +45,8 @@ class GameSystem extends System
 
         sounds["cash"] = Gengine.getResourceCache().getSound("cash.wav", true);
         sounds["build"] = Gengine.getResourceCache().getSound("build.wav", true);
+        sounds["step"] = Gengine.getResourceCache().getSound("step.wav", true);
+        sounds["collision"] = Gengine.getResourceCache().getSound("collision.wav", true);
     }
 
     override public function addToEngine(_engine:Engine)

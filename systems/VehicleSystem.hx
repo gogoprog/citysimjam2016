@@ -135,6 +135,7 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
                     {
                         v.state = "crashed";
                         otherNode.vehicle.state = "crashed";
+                        gameSystem.playSound("collision");
                         break;
                     }
                 }
@@ -171,7 +172,7 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
             {
                 v.hasPackage = true;
                 v.state = "idling";
-                trace("Loaded!");
+                gameSystem.playSound("step");
             }
         }
         else if(node.vehicle.state == "delivering")
@@ -182,7 +183,6 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
             {
                 v.hasPackage = false;
                 v.state = "idling";
-                trace("Delivered!");
                 gameSystem.gain(50);
             }
         }
