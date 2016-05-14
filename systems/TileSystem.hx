@@ -23,6 +23,7 @@ class TileSystem extends ListIteratingSystem<TileNode>
     private var previousMouseCoords = new IntVector2(1, 1);
     private var sprites = new Map<String, Dynamic>();
     public var mapSize:Int;
+    public var homeTileNode:TileNode;
 
     public function new()
     {
@@ -74,7 +75,7 @@ class TileSystem extends ListIteratingSystem<TileNode>
         var coords = new IntVector2(0, 0);
         var mp = engine.getSystem(CameraSystem).mouseWorldPosition;
 
-        var converted = getCarFromIso(mp.x, mp.y);
+        var converted = IsometricSystem.getCarFromIso(mp.x, mp.y);
         mouseCoords.x = Math.floor((converted.x + tileSize/2) / tileSize);
         mouseCoords.y = Math.floor((converted.y + tileSize/2) / tileSize);
 
@@ -148,7 +149,27 @@ class TileSystem extends ListIteratingSystem<TileNode>
         previousMouseCoords.y = mouseCoords.y;
     }
 
-    public function generateMap(size:Int)
+    public function generateDemoMap()
+    {
+        generateMap(10, 3);
+
+        for(i in 0...60)
+        {
+            var tn = getRandomTileNode(Dirt);
+            tn.tile.type = Road;
+        }
+
+        checkAllTextures();
+
+        for(i in 0...5)
+        {
+            var tn = getRandomTileNode(Road);
+            var c = tn.tile.coords;
+            engine.getSystem(VehicleSystem).spawn(c.x, c.y);
+        }
+    }
+
+    public function generateMap(size:Int, clients:Int)
     {
         if(grid != null)
         {
@@ -174,17 +195,47 @@ class TileSystem extends ListIteratingSystem<TileNode>
             }
         }
 
-        grid[4][4].tile.type = Home;
-        checkTexture(grid[4][4]);
+        var tn = getRandomTileNode(Dirt);
+        tn.tile.type = Home;
+        checkTexture(tn);
+        homeTileNode = tn;
 
-        grid[8][4].tile.type = Client;
-        checkTexture(grid[8][4]);
+        for(i in 0...clients)
+        {
+            var tn = getRandomTileNode(Dirt);
+            tn.tile.type = Client;
+            checkTexture(tn);
+        }
 
-        var c = getIsoFromCar(size * 0.5 * tileSize, size * 0.5 * tileSize);
-        var p = new Vector3(0, 0, 0);
-        p.x = c.x;
-        p.y = c.y;
-        engine.getSystem(CameraSystem).cameraNode.entity.setPosition(p);
+        var c = IsometricSystem.getIsoFromCar(size * 0.5 * tileSize, size * 0.5 * tileSize);
+        engine.getSystem(CameraSystem).cameraNode.entity.setPosition(new Vector3(c.x, c.y, 0));
+    }
+
+    private function checkAllTextures()
+    {
+        for(i in 0...mapSize)
+        {
+            for(j in 0...mapSize)
+            {
+                checkTexture(grid[i][j]);
+            }
+        }
+    }
+
+    private function getRandomTileNode(type:TileType):TileNode
+    {
+        while(true)
+        {
+            var x = Std.random(mapSize);
+            var y = Std.random(mapSize);
+
+            if(grid[x][y].tile.type == type)
+            {
+                return grid[x][y];
+            }
+        }
+
+        return grid[0][0];
     }
 
     private function areCoordsOnMap(coords:IntVector2)
@@ -256,7 +307,7 @@ class TileSystem extends ListIteratingSystem<TileNode>
         var p = e.position;
 
         var c = node.tile.coords;
-        var v = getIsoFromCar(c.x, c.y);
+        var v = IsometricSystem.getIsoFromCar(c.x, c.y);
 
         p.x = v.x * tileSize;
         p.y = v.y * tileSize;
@@ -268,16 +319,6 @@ class TileSystem extends ListIteratingSystem<TileNode>
         grid[c.x][c.y] = node;
 
         checkTexture(node);
-    }
-
-    static public function getCarFromIso(i:Float, j:Float):Vector2
-    {
-        return new Vector2((i + 2.0*j) / 2.0, (2.0*j - i )/2.0);
-    }
-
-    static public function getIsoFromCar(x:Float, y:Float):Vector2
-    {
-        return new Vector2(x - y, (x + y) / 2.0);
     }
 
     private function addTile(x:Int, y:Int):Entity

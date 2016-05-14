@@ -41,7 +41,7 @@ class Application
         viewport.setCamera(cameraEntity.get(Camera));
         Gengine.getRenderer().setViewport(0, viewport);
 
-        engine.getSystem(TileSystem).generateMap(10);
+        engine.getSystem(TileSystem).generateDemoMap();
 
         Gui.gameSystem = engine.getSystem(GameSystem);
         Gui.init();

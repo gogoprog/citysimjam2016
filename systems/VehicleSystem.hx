@@ -189,7 +189,7 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
         var p = e.position;
         var ts = engine.getSystem(TileSystem);
         var c = node.vehicle.fromCoords;
-        var v = TileSystem.getIsoFromCar(c.x, c.y);
+        var v = IsometricSystem.getIsoFromCar(c.x, c.y);
 
         p.x = v.x * TileSystem.tileSize;
         p.y = v.y * TileSystem.tileSize;

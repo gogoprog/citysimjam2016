@@ -110,12 +110,23 @@ class GameSystem extends System
 
     public function start()
     {
-        engine.getSystem(TileSystem).generateMap(20);
+        engine.getSystem(TileSystem).generateMap(20, 10);
         playing = true;
         Gui.showPage("hud");
 
         money = 2000;
         Gui.setMoney(money);
+
+        var list = new Array<Entity>();
+        for(v in engine.getNodeList(VehicleNode))
+        {
+            list.push(v.entity);
+        }
+
+        for(l in list)
+        {
+            engine.removeEntity(l);
+        }
     }
 
     public function doAction(action:Action)
@@ -123,7 +134,9 @@ class GameSystem extends System
         switch(action)
         {
             case BuyCar:
-                engine.getSystem(VehicleSystem).spawn(4, 4);
+                var htn = engine.getSystem(TileSystem).homeTileNode;
+                var c = htn.tile.coords;
+                engine.getSystem(VehicleSystem).spawn(c.x, c.y);
         }
     }
 
