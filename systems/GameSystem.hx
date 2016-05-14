@@ -62,7 +62,6 @@ class GameSystem extends System
         engine.addEntity(musicEntity);
 
         var soundSource:SoundSource = musicEntity.get(SoundSource);
-        soundSource.play(Gengine.getResourceCache().getSound("music.ogg", true));
         soundSource.setGain(0.7);
 
         soundSources = new Vector<SoundSource>(8);
@@ -78,6 +77,11 @@ class GameSystem extends System
 
     override public function update(dt:Float):Void
     {
+        if(!musicEntity.get(SoundSource).isPlaying())
+        {
+            musicEntity.get(SoundSource).play(Gengine.getResourceCache().getSound("music.ogg", true));
+        }
+
         if(input.getScancodePress(41))
         {
             Gengine.exit();
