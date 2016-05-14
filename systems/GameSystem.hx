@@ -25,7 +25,7 @@ class GameSystem extends System
     private var input:Input;
     private var engine:Engine;
     private var playing = false;
-    private var currentTool:Tool;
+    private var currentTool:Tool = None;
     private var musicEntity:Entity;
     private var soundSources:Vector<SoundSource>;
     private var nextSoundSourceIndex = 0;

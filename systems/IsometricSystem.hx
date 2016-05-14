@@ -16,6 +16,7 @@ class IsometricSystem extends ListIteratingSystem<IsometricNode>
 {
     static public var tileSize = 50;
     private var engine:Engine;
+    private var position = new Vector3(0, 0, 0);
 
     public function new()
     {
@@ -29,9 +30,17 @@ class IsometricSystem extends ListIteratingSystem<IsometricNode>
         engine = _engine;
     }
 
-    private function updateNode(node:IsometricNode):Void
+    private function updateNode(node:IsometricNode, dt:Float):Void
     {
+        var p = position;
+        var coords = node.iso.coords;
 
+        var converted = getIsoFromCar(coords.x, coords.y);
+
+        p.x = converted.x * tileSize;
+        p.y = converted.y * tileSize;
+
+        node.entity.setPosition(p);
     }
 
     static public function getCarFromIso(i:Float, j:Float):Vector2

@@ -110,13 +110,8 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
 
             var f = v.time / duration;
 
-            v.currentCoords.x = v.fromCoords.x + (v.toCoords.x - v.fromCoords.x) * f;
-            v.currentCoords.y = v.fromCoords.y + (v.toCoords.y - v.fromCoords.y) * f;
-
-            var converted = TileSystem.getIsoFromCar(v.currentCoords.x, v.currentCoords.y);
-
-            p.x = converted.x * TileSystem.tileSize;
-            p.y = converted.y * TileSystem.tileSize;
+            node.isometric.coords.x = v.fromCoords.x + (v.toCoords.x - v.fromCoords.x) * f;
+            node.isometric.coords.y = v.fromCoords.y + (v.toCoords.y - v.fromCoords.y) * f;
 
             node.sprite.setLayer(0);
             node.sprite.setOrderInLayer(Std.int(-p.y) + 16);
@@ -215,9 +210,10 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
         var e = new Entity();
         e.add(new StaticSprite2D());
         e.add(new Vehicle());
+        e.add(new Isometric());
         e.get(Vehicle).fromCoords = new IntVector2(x, y);
         e.get(Vehicle).toCoords = new IntVector2(x, y);
-        e.get(Vehicle).currentCoords = new Vector2(x, y);
+        e.get(Isometric).coords = new Vector2(x, y);
         e.get(Vehicle).state = "idling";
 
         engine.addEntity(e);

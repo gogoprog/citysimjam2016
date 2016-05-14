@@ -25,6 +25,7 @@ class Application
         engine.addSystem(new CameraSystem(), 0);
         engine.addSystem(new TileSystem(), 0);
         engine.addSystem(new VehicleSystem(), 0);
+        engine.addSystem(new IsometricSystem(), 0);
 
         Gengine.getRenderer().getDefaultZone().setFogColor(new Color(0.4, 0.7, 0.7, 1));
 

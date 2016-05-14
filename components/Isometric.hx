@@ -4,10 +4,9 @@ import gengine.math.*;
 
 class Isometric
 {
-    public var coords:IntVector2;
+    public var coords:Vector2;
 
-    public function new(_coords:IntVector2)
+    public function new()
     {
-        coords = _coords;
     }
 }
