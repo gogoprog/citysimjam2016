@@ -92,13 +92,12 @@ class TileSystem extends ListIteratingSystem<TileNode>
                 var x = mouseCoords.x;
                 var y = mouseCoords.y;
 
-                if(grid[x][y].tile.type == Dirt)
+                if(gameSystem.getCurrentTool() == Road)
                 {
-                    grid[x][y].tile.type = Road;
-                }
-                else if(grid[x][y].tile.type == Road)
-                {
-                    grid[x][y].tile.type = Dirt;
+                    if(grid[x][y].tile.type == Dirt)
+                    {
+                        grid[x][y].tile.type = Road;
+                    }
                 }
 
                 checkTexture(grid[x][y]);
