@@ -29,6 +29,8 @@ class GameSystem extends System
     private var musicEntity:Entity;
     private var soundSources:Vector<SoundSource>;
     private var nextSoundSourceIndex = 0;
+    private var money = 0;
+    private var deliveredPackages = 0;
 
     public function new()
     {
@@ -49,7 +51,7 @@ class GameSystem extends System
 
         var soundSource:SoundSource = musicEntity.get(SoundSource);
         soundSource.play(Gengine.getResourceCache().getSound("music.ogg", true));
-        soundSource.setGain(0.5);
+        soundSource.setGain(0.7);
 
         soundSources = new Vector<SoundSource>(8);
 

@@ -87,39 +87,44 @@ class TileSystem extends ListIteratingSystem<TileNode>
         {
             grid[mouseCoords.x][mouseCoords.y].sprite.setAlpha(0.7);
 
-            if(input.getMouseButtonPress(button))
+            if(input.getMouseButtonDown(button))
             {
                 var x = mouseCoords.x;
                 var y = mouseCoords.y;
+                var mustCheck = false;
 
                 if(gameSystem.getCurrentTool() == Road)
                 {
                     if(grid[x][y].tile.type == Dirt)
                     {
                         grid[x][y].tile.type = Road;
+                        mustCheck = true;
                     }
                 }
 
-                checkTexture(grid[x][y]);
-
-                if(isRoad(new IntVector2(x - 1, y)))
+                if(mustCheck)
                 {
-                    checkTexture(grid[x - 1][y]);
-                }
+                    checkTexture(grid[x][y]);
 
-                if(isRoad(new IntVector2(x + 1, y)))
-                {
-                    checkTexture(grid[x + 1][y]);
-                }
+                    if(isRoad(new IntVector2(x - 1, y)))
+                    {
+                        checkTexture(grid[x - 1][y]);
+                    }
 
-                if(isRoad(new IntVector2(x, y - 1)))
-                {
-                    checkTexture(grid[x][y - 1]);
-                }
+                    if(isRoad(new IntVector2(x + 1, y)))
+                    {
+                        checkTexture(grid[x + 1][y]);
+                    }
 
-                if(isRoad(new IntVector2(x, y + 1)))
-                {
-                    checkTexture(grid[x][y + 1]);
+                    if(isRoad(new IntVector2(x, y - 1)))
+                    {
+                        checkTexture(grid[x][y - 1]);
+                    }
+
+                    if(isRoad(new IntVector2(x, y + 1)))
+                    {
+                        checkTexture(grid[x][y + 1]);
+                    }
                 }
             }
         }
