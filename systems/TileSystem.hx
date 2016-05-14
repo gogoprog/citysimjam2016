@@ -93,14 +93,27 @@ class TileSystem extends ListIteratingSystem<TileNode>
                 var y = mouseCoords.y;
                 var mustCheck = false;
 
-                if(gameSystem.getCurrentTool() == Road && gameSystem.canAffordCurrentTool())
+                if(gameSystem.canAffordCurrentTool())
                 {
-                    if(grid[x][y].tile.type == Dirt)
+                    if(gameSystem.getCurrentTool() == Road)
                     {
-                        gameSystem.playSound("build");
-                        grid[x][y].tile.type = Road;
-                        gameSystem.useCurrentTool();
-                        mustCheck = true;
+                        if(grid[x][y].tile.type == Dirt)
+                        {
+                            gameSystem.playSound("build");
+                            grid[x][y].tile.type = Road;
+                            gameSystem.useCurrentTool();
+                            mustCheck = true;
+                        }
+                    }
+                    else if(gameSystem.getCurrentTool() == Remove)
+                    {
+                        if(grid[x][y].tile.type == Road)
+                        {
+                            gameSystem.playSound("break");
+                            grid[x][y].tile.type = Dirt;
+                            gameSystem.useCurrentTool();
+                            mustCheck = true;
+                        }
                     }
                 }
 
