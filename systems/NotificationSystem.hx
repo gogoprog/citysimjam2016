@@ -58,7 +58,7 @@ class NotificationSystem extends ListIteratingSystem<NotificationNode>
         node.notification.time = 0;
     }
 
-    public function spawn(which:String, where:Vector3, ?infinite = false, ?add = true)
+    public function spawn(which:String, where:Vector3, ?infinite = false)
     {
         var e = new Entity();
         e.add(new StaticSprite2D());
@@ -68,10 +68,7 @@ class NotificationSystem extends ListIteratingSystem<NotificationNode>
         e.get(Notification).infinite = infinite;
         e.setPosition(where);
 
-        if(add)
-        {
-            engine.addEntity(e);
-        }
+        engine.addEntity(e);
 
         return e;
     }

@@ -158,7 +158,8 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
                         v.state = "delivering";
                         v.client = tn;
                         tn.tile.wantsPackage = false;
-                        engine.removeEntity(tn.tile.notificationEntity);
+                        tn.tile.notificationEntity.get(StaticSprite2D).setAlpha(0);
+
                         v.time = 0;
                     }
                 }

@@ -209,7 +209,8 @@ class TileSystem extends ListIteratingSystem<TileNode>
             gameSystem.addClient(tn);
 
             var p = tn.entity.position;
-            tn.tile.notificationEntity = engine.getSystem(NotificationSystem).spawn("down_arrow", new Vector3(p.x, p.y + 64, 0), true, false);
+            tn.tile.notificationEntity = engine.getSystem(NotificationSystem).spawn("down_arrow", new Vector3(p.x, p.y + 64, 0), true);
+            tn.tile.notificationEntity.get(StaticSprite2D).setAlpha(0);
         }
 
         var c = IsometricSystem.getIsoFromCar(size * 0.5 * tileSize, size * 0.5 * tileSize);

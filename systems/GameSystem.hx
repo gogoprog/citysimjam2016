@@ -100,7 +100,7 @@ class GameSystem extends System
             if(!tn.tile.wantsPackage && tn.tile.notificationEntity != null)
             {
                 tn.tile.wantsPackage = true;
-                engine.addEntity(tn.tile.notificationEntity);
+                tn.tile.notificationEntity.get(StaticSprite2D).setAlpha(1);
             }
         }
     }
@@ -127,16 +127,6 @@ class GameSystem extends System
 
     public function start()
     {
-        clients.splice(0, clients.length);
-
-        engine.getSystem(TileSystem).generateMap(20, 10);
-
-        playing = true;
-        Gui.showPage("hud");
-
-        money = 2000;
-        Gui.setMoney(money);
-
         var list = new Array<Entity>();
 
         for(v in engine.getNodeList(VehicleNode))
@@ -153,6 +143,16 @@ class GameSystem extends System
         {
             engine.removeEntity(l);
         }
+
+        clients.splice(0, clients.length);
+
+        engine.getSystem(TileSystem).generateMap(20, 10);
+
+        playing = true;
+        Gui.showPage("hud");
+
+        money = 2000;
+        Gui.setMoney(money);
 
         clientTime = 0;
     }
