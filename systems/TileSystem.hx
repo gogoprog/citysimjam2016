@@ -50,6 +50,7 @@ class TileSystem extends ListIteratingSystem<TileNode>
         sprites["roadEndS"] = Gengine.getResourceCache().getSprite2D("roadEndSouth.png", true);
         sprites["roadEndW"] = Gengine.getResourceCache().getSprite2D("roadEndWest.png", true);
         sprites["building"] = Gengine.getResourceCache().getSprite2D("building.png", true);
+        sprites["home"] = Gengine.getResourceCache().getSprite2D("home.png", true);
     }
 
     override public function addToEngine(_engine:Engine)
@@ -346,8 +347,7 @@ class TileSystem extends ListIteratingSystem<TileNode>
                 node.sprite.setSprite(sprites["building"]);
 
             case Home:
-                node.sprite.setSprite(sprites["building"]);
-                node.sprite.setColor(new Color(0.6, 0.6, 0, 1));
+                node.sprite.setSprite(sprites["home"]);
 
             case Road:
                 var n = false;
