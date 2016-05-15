@@ -151,9 +151,14 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
                 }
                 else
                 {
-                    if(ts.isNextToType(v.fromCoords, Client))
+                    var tn = ts.findDeliverableClient(v.fromCoords);
+
+                    if(tn != null)
                     {
                         v.state = "delivering";
+                        v.client = tn;
+                        tn.tile.wantsPackage = false;
+                        engine.removeEntity(tn.tile.notificationEntity);
                         v.time = 0;
                     }
                 }
@@ -179,7 +184,8 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
                 v.hasPackage = false;
                 v.state = "idling";
                 gameSystem.gain(50);
-                engine.getSystem(NotificationSystem).spawn("package", node.entity.position);
+                var p = v.client.entity.position;
+                engine.getSystem(NotificationSystem).spawn("package", new Vector3(p.x, p.y + 64, 0));
             }
         }
     }

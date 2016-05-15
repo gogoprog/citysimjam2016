@@ -1,6 +1,7 @@
 package components;
 
 import gengine.math.*;
+import gengine.*;
 
 enum TileType {
     Dirt;
@@ -13,7 +14,7 @@ enum TileType {
 class Tile
 {
     public var coords:IntVector2;
-    public var wantsPackage = true;
+    public var wantsPackage = false;
 
     public function new(_coords:IntVector2)
     {
@@ -22,5 +23,5 @@ class Tile
 
     public var type:TileType = TileType.Dirt;
 
-
+    public var notificationEntity:Entity;
 }

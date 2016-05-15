@@ -206,6 +206,10 @@ class TileSystem extends ListIteratingSystem<TileNode>
             var tn = getRandomTileNode(Dirt);
             tn.tile.type = Client;
             checkTexture(tn);
+            gameSystem.addClient(tn);
+
+            var p = tn.entity.position;
+            tn.tile.notificationEntity = engine.getSystem(NotificationSystem).spawn("down_arrow", new Vector3(p.x, p.y + 64, 0), true, false);
         }
 
         var c = IsometricSystem.getIsoFromCar(size * 0.5 * tileSize, size * 0.5 * tileSize);
@@ -277,6 +281,31 @@ class TileSystem extends ListIteratingSystem<TileNode>
         }
 
         return false;
+    }
+
+    public function findDeliverableClient(coords:IntVector2):TileNode
+    {
+        if(isType(new IntVector2(coords.x - 1, coords.y), Client) && grid[coords.x - 1][coords.y].tile.wantsPackage)
+        {
+            return grid[coords.x - 1][coords.y];
+        }
+
+        if(isType(new IntVector2(coords.x + 1, coords.y), Client) && grid[coords.x + 1][coords.y].tile.wantsPackage)
+        {
+            return grid[coords.x + 1][coords.y];
+        }
+
+        if(isType(new IntVector2(coords.x, coords.y - 1), Client) && grid[coords.x][coords.y - 1].tile.wantsPackage)
+        {
+            return grid[coords.x][coords.y - 1];
+        }
+
+        if(isType(new IntVector2(coords.x, coords.y + 1), Client) && grid[coords.x][coords.y + 1].tile.wantsPackage)
+        {
+            return grid[coords.x][coords.y + 1];
+        }
+
+        return null;
     }
 
     public function getToCoords(coords:IntVector2, direction:Direction)

@@ -1,6 +1,7 @@
 package components;
 
 import gengine.math.*;
+import nodes.*;
 
 enum Direction
 {
@@ -20,6 +21,7 @@ class Vehicle
     public var state:String;
     public var time:Float;
     public var hasPackage:Bool = false;
+    public var client:TileNode = null;
 
     public function new()
     {

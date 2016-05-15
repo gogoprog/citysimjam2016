@@ -32,10 +32,10 @@ class NotificationSystem extends ListIteratingSystem<NotificationNode>
 
         n.time += dt;
 
-        p.y = n.startPosition.y - Math.cos(n.time / 1) * 64 + 64;
-
         if(!n.infinite)
         {
+            p.y = n.startPosition.y - Math.cos(n.time / 1) * 64 + 64;
+
             node.sprite.setAlpha(1 - n.time / 1);
 
             if(n.time > 1)
@@ -43,6 +43,10 @@ class NotificationSystem extends ListIteratingSystem<NotificationNode>
                 engine.removeEntity(node.entity);
                 return;
             }
+        }
+        else
+        {
+            p.y = n.startPosition.y - Math.cos(n.time * 5) * 16 + 16;
         }
 
         node.entity.position = p;
@@ -54,15 +58,21 @@ class NotificationSystem extends ListIteratingSystem<NotificationNode>
         node.notification.time = 0;
     }
 
-    public function spawn(which:String, where:Vector3)
+    public function spawn(which:String, where:Vector3, ?infinite = false, ?add = true)
     {
         var e = new Entity();
         e.add(new StaticSprite2D());
         e.add(new Notification());
         e.get(StaticSprite2D).setSprite(Gengine.getResourceCache().getSprite2D(which + ".png", true));
         e.get(StaticSprite2D).setLayer(100000);
+        e.get(Notification).infinite = infinite;
         e.setPosition(where);
 
-        engine.addEntity(e);
+        if(add)
+        {
+            engine.addEntity(e);
+        }
+
+        return e;
     }
 }

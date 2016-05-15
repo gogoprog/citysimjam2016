@@ -33,6 +33,8 @@ class GameSystem extends System
     private var deliveredPackages = 0;
     private var toolCosts:Map<Tool, Int>;
     private var sounds = new Map<String, Dynamic>();
+    private var clients = new Array<TileNode>();
+    private var clientTime = 0.0;
 
     public function new()
     {
@@ -87,9 +89,19 @@ class GameSystem extends System
             Gengine.exit();
         }
 
-        if(input.getScancodePress(44))
+        clientTime -= dt;
+
+        if(clientTime < 0)
         {
-            start();
+            clientTime = 4 + Math.random() * 4;
+
+            var tn = clients[Std.random(clients.length)];
+
+            if(!tn.tile.wantsPackage && tn.tile.notificationEntity != null)
+            {
+                tn.tile.wantsPackage = true;
+                engine.addEntity(tn.tile.notificationEntity);
+            }
         }
     }
 
@@ -108,9 +120,17 @@ class GameSystem extends System
         return currentTool;
     }
 
+    public function addClient(tn:TileNode)
+    {
+        clients.push(tn);
+    }
+
     public function start()
     {
+        clients.splice(0, clients.length);
+
         engine.getSystem(TileSystem).generateMap(20, 10);
+
         playing = true;
         Gui.showPage("hud");
 
@@ -118,7 +138,13 @@ class GameSystem extends System
         Gui.setMoney(money);
 
         var list = new Array<Entity>();
+
         for(v in engine.getNodeList(VehicleNode))
+        {
+            list.push(v.entity);
+        }
+
+        for(v in engine.getNodeList(NotificationNode))
         {
             list.push(v.entity);
         }
@@ -127,6 +153,8 @@ class GameSystem extends System
         {
             engine.removeEntity(l);
         }
+
+        clientTime = 0;
     }
 
     public function doAction(action:Action)
