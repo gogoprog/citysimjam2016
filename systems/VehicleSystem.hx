@@ -129,6 +129,7 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
                     if(dx < 15 && dy < 15)
                     {
                         v.state = "crashed";
+                        v.time = 0;
                         otherNode.vehicle.state = "crashed";
                         gameSystem.playSound("collision");
                         break;
@@ -187,6 +188,15 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
                 gameSystem.onPackageDelivered();
                 var p = v.client.entity.position;
                 engine.getSystem(NotificationSystem).spawn("package", new Vector3(p.x, p.y + 64, 0));
+            }
+        }
+        else if(node.vehicle.state == "crashed")
+        {
+            v.time += dt;
+            node.sprite.setAlpha(1 - v.time / 5);
+            if(v.time > 5)
+            {
+                engine.removeEntity(node.entity);
             }
         }
     }

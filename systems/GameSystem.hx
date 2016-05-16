@@ -65,6 +65,7 @@ class GameSystem extends System
         engine.addEntity(musicEntity);
 
         var soundSource:SoundSource = musicEntity.get(SoundSource);
+        soundSource.setSoundType("Music");
         soundSource.setGain(0.7);
 
         soundSources = new Vector<SoundSource>(8);
@@ -83,6 +84,7 @@ class GameSystem extends System
         if(!musicEntity.get(SoundSource).isPlaying())
         {
             musicEntity.get(SoundSource).play(Gengine.getResourceCache().getSound("music.ogg", true));
+            musicEntity.get(SoundSource).setGain(0.7);
         }
 
         if(input.getScancodePress(41))
@@ -152,7 +154,7 @@ class GameSystem extends System
         playing = true;
         Gui.showPage("hud");
 
-        money = 2000;
+        money = 5000;
         Gui.setMoney(money);
 
         clientTime = 0;
@@ -165,9 +167,13 @@ class GameSystem extends System
         switch(action)
         {
             case BuyCar:
-                var htn = engine.getSystem(TileSystem).homeTileNode;
-                var c = htn.tile.coords;
-                engine.getSystem(VehicleSystem).spawn(c.x, c.y);
+                if(canAfford(200))
+                {
+                    var htn = engine.getSystem(TileSystem).homeTileNode;
+                    var c = htn.tile.coords;
+                    engine.getSystem(VehicleSystem).spawn(c.x, c.y);
+                    cost(200);
+                }
         }
     }
 
