@@ -184,7 +184,7 @@ class VehicleSystem extends ListIteratingSystem<VehicleNode>
             {
                 v.hasPackage = false;
                 v.state = "idling";
-                gameSystem.gain(50);
+                gameSystem.onPackageDelivered();
                 var p = v.client.entity.position;
                 engine.getSystem(NotificationSystem).spawn("package", new Vector3(p.x, p.y + 64, 0));
             }

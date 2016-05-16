@@ -1,4 +1,3 @@
-
 import js.*;
 import systems.*;
 import systems.GameSystem;
@@ -38,5 +37,10 @@ class Gui
     static public function setMoney(value:Int)
     {
         new JQuery(".money").text(Std.string(value));
+    }
+
+    static public function setPackages(value:Int)
+    {
+        new JQuery(".packages").text(Std.string(value));
     }
 }

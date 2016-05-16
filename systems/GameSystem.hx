@@ -50,6 +50,7 @@ class GameSystem extends System
         sounds["step"] = Gengine.getResourceCache().getSound("step.wav", true);
         sounds["collision"] = Gengine.getResourceCache().getSound("collision.wav", true);
         sounds["break"] = Gengine.getResourceCache().getSound("break.wav", true);
+        sounds["powerup"] = Gengine.getResourceCache().getSound("powerup.wav", true);
     }
 
     override public function addToEngine(_engine:Engine)
@@ -155,6 +156,8 @@ class GameSystem extends System
         Gui.setMoney(money);
 
         clientTime = 0;
+
+        playSound("powerup");
     }
 
     public function doAction(action:Action)
@@ -205,5 +208,12 @@ class GameSystem extends System
         money += amount;
         Gui.setMoney(money);
         playSound("cash");
+    }
+
+    public function onPackageDelivered()
+    {
+        deliveredPackages++;
+        Gui.setPackages(deliveredPackages);
+        gain(50);
     }
 }
